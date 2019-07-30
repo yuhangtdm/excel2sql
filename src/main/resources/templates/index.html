@@ -1,0 +1,125 @@
+<!DOCTYPE html  >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>springboot+thymeleaf</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" href="../src/css/layui.css" />
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <form class="layui-form" method="post" enctype="multipart/form-data"  action="/parseExcel">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据库主机地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="host" required  lay-verify="required" placeholder="例如,127.0.0.1" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">端口号</label>
+                    <div class="layui-input-block">
+                        <input type="text"  name="port" value="3306" required  lay-verify="required" placeholder="默认3306" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据库名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="databaseName" required  lay-verify="required" placeholder="请输入表名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">表名</label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="tableName" required  lay-verify="required" placeholder="请输入表名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否有表头</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="hasTableHead" value="1" title="是" checked>
+                        <input type="radio" name="hasTableHead" value="0" title="否">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">表头的行数</label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="headIndex" value="1" placeholder="默认为1" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">起始行数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="startIndex" value="2" placeholder="默认为2" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+            <div class="layui-form-item">
+                <!--<label class="layui-form-label">上传excel</label>
+                <div class="layui-upload-drag" id="excel">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>-->
+                <input type="file" name="file" />
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button id="sub" lay-submit class="layui-btn" >立即提交</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        © layui.com - 底部固定区域
+    </div>
+</div>
+
+<script th:src="@{/layui/layui.js}"  charset="utf-8"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['element','form','upload','jquery'], function(){
+        var form = layui.form;
+        var upload = layui.upload;
+        var $ = layui.jquery;
+
+       /* upload.render({
+            elem: '#excel',
+            url: '/upload',
+            acceptMime: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            before:function(){
+
+            },
+            data:{
+                url:function(){
+                    return $('#url').val();
+                },
+                tableName:function () {
+                    return $('#tableName').val();
+                },
+                startIndex:function () {
+                    return $('#startIndex').val();
+                }
+            },
+            done: function(res, index, upload){ //上传后的回调
+                console.log(res);
+            },
+            auto:false,
+            bindAction:'#sub',
+            accept: 'file' //允许上传的文件类型
+        })*/
+
+        form.on('submit(*)', function(data){
+            // return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+    });
+</script>
+</body>
+</html>
+
+
