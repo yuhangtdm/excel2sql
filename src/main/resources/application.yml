@@ -34,3 +34,7 @@ mybatis-plus:
     cache-enabled: false
 
 parseStrategy: poi
+
+logging:
+  #  path: /opt/data/logs
+  file: /project/logs/excel2sql.log
