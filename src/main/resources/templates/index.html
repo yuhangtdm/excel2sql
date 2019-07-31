@@ -3,82 +3,99 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <title>springboot+thymeleaf</title>
-    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" href="../src/css/layui.css" />
+    <title>excel2sql</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"  />
 </head>
-<body class="layui-layout-body">
-<div class="layui-layout layui-layout-admin">
-
-    <div class="layui-body">
-        <!-- 内容主体区域 -->
-        <div style="padding: 15px;">
-            <form class="layui-form" method="post" enctype="multipart/form-data"  action="/parseExcel">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">数据库主机地址</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="host" required  lay-verify="required" placeholder="例如,127.0.0.1" autocomplete="off" class="layui-input">
+<body>
+    <div class="layui-container" style="margin: 10px">
+        <div class="layui-row">
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-header">操作手册</div>
+                    <div class="layui-card-body">
+                        默认按照表的列顺序来生成sql<br>
+                        如果选中了按表头解析,则会生成以表头为列名的sql
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">端口号</label>
-                    <div class="layui-input-block">
-                        <input type="text"  name="port" value="3306" required  lay-verify="required" placeholder="默认3306" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">数据库名称</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="databaseName" required  lay-verify="required" placeholder="请输入表名" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">表名</label>
-                    <div class="layui-input-inline">
-                        <input type="text"  name="tableName" required  lay-verify="required" placeholder="请输入表名" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">是否有表头</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="hasTableHead" value="1" title="是" checked>
-                        <input type="radio" name="hasTableHead" value="0" title="否">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">表头的行数</label>
-                    <div class="layui-input-inline">
-                        <input type="text"  name="headIndex" value="1" placeholder="默认为1" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">起始行数</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="startIndex" value="2" placeholder="默认为2" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-            <div class="layui-form-item">
-                <!--<label class="layui-form-label">上传excel</label>
-                <div class="layui-upload-drag" id="excel">
-                    <i class="layui-icon"></i>
-                    <p>点击上传，或将文件拖拽到此处</p>
-                </div>-->
-                <input type="file" name="file" />
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button id="sub" lay-submit class="layui-btn" >立即提交</button>
                 </div>
             </div>
-        </form>
+            <div class="layui-col-md9" style="padding: 5px">
+                    <h2>excel转sql脚本</h2>
+                    <form class="layui-form" method="post" enctype="multipart/form-data"  action="/parseExcel">
+                        <div style="margin-top:10px " class="layui-form-item">
+                            <label class="layui-form-label">数据库主机地址</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="host" value="127.0.0.1" required  lay-verify="required"    placeholder="例如,127.0.0.1" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">端口号</label>
+                            <div class="layui-input-inline">
+                                <input type="number"  name="port" value="3306" required  lay-verify="required"   placeholder="默认3306" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">数据库名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="databaseName"  required  lay-verify="required" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">表名</label>
+                            <div class="layui-input-inline">
+                                <input type="text"  name="tableName"  required  lay-verify="required"  placeholder="请输入表名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">数据库用户名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="userName" value="root" required  lay-verify="required" placeholder="请输入数据库用户名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">数据库密码</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="password" required  lay-verify="required" placeholder="请输入数据库密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否按表头解析</label>
+                            <div class="layui-input-inline">
+                                <input type="radio" name="hasTableHead" value="0" title="否" checked>
+                                <input type="radio" name="hasTableHead" value="1" title="是">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">表头所在行</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="headIndex" value="1"  placeholder="默认为1" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">解析起始行数</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="startIndex" value="2" required  lay-verify="required" placeholder="默认为2" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上传excel</label>
+                            <input type="file" name="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button id="sub" lay-submit class="layui-btn" >立即提交</button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+        <div class="layui-footer">
+            © author:hang.yu,wechat:yh131720 版权所有
         </div>
     </div>
-
-    <div class="layui-footer">
-        © layui.com - 底部固定区域
-    </div>
-</div>
-
 <script th:src="@{/layui/layui.js}"  charset="utf-8"></script>
 <script>
     //JavaScript代码区域
@@ -86,32 +103,6 @@
         var form = layui.form;
         var upload = layui.upload;
         var $ = layui.jquery;
-
-       /* upload.render({
-            elem: '#excel',
-            url: '/upload',
-            acceptMime: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            before:function(){
-
-            },
-            data:{
-                url:function(){
-                    return $('#url').val();
-                },
-                tableName:function () {
-                    return $('#tableName').val();
-                },
-                startIndex:function () {
-                    return $('#startIndex').val();
-                }
-            },
-            done: function(res, index, upload){ //上传后的回调
-                console.log(res);
-            },
-            auto:false,
-            bindAction:'#sub',
-            accept: 'file' //允许上传的文件类型
-        })*/
 
         form.on('submit(*)', function(data){
             // return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。

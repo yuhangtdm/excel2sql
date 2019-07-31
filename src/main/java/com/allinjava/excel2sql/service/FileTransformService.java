@@ -1,12 +1,10 @@
-
 package com.allinjava.excel2sql.service;
 
 import com.allinjava.excel2sql.dto.ParseExcelDTO;
-
 import java.io.File;
 
 /**
- * @author za-yuhang   2019/7/25 11:29
+ * @author yuhang   2019/7/25 11:29
  */
 public interface FileTransformService {
 

@@ -1,6 +1,6 @@
-
 package com.allinjava.excel2sql.strategy;
 
+import com.allinjava.excel2sql.strategy.impl.PoiExcelStrategy;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author za-yuhang   2019/7/27 10:32
+ * 工厂设计模式
+ * @author yuhang   2019/7/27 10:32
  */
 @Component
 public class ParseExcelFactory implements InitializingBean {

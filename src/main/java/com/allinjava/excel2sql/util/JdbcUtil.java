@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.List;
 
 /**
- * @author za-yuhang   2019/7/26 10:10
+ * @author yuhang   2019/7/26 10:10
  */
 @Slf4j
 public class JdbcUtil {

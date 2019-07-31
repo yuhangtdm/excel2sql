@@ -1,15 +1,12 @@
 package com.allinjava.excel2sql.util;
 
-import com.allinjava.excel2sql.dto.ParseExcelDTO;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFDataFormatter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -44,12 +41,20 @@ public class PoiUtil {
     private static final String DEST_FILE_SUFFIX = ".sql";
 
 
+    /**
+     *  生成sql文件
+     * @param excelFile excel源数据
+     * @param columnList table的列集合
+     * @param startIndex 开始解析的行数
+     * @param databaseName 数据库名称
+     * @param tableName 表名
+     * @param tmpPath 存放文件的临时路径
+     */
     public static File getSqlFile(File excelFile, List<String> columnList, int startIndex,
                                   String databaseName, String tableName, String tmpPath) {
 
         File destFile = null;
         BufferedWriter bufferedWriter = null;
-
         try {
             String fileName = excelFile.getName();
             Sheet sheet = getSheet(excelFile);
@@ -81,15 +86,12 @@ public class PoiUtil {
                                         .append(CONNECT_QUOTATION).append(CONNECT_COMMA);
                                 break;
                             case NUMERIC:
-                                HSSFDataFormatter dataFormatter = new HSSFDataFormatter();
-                                String value = dataFormatter.formatCellValue(cell);
-                                ExcelNumberFormat nf = ExcelNumberFormat.from(cell, null);
-                                boolean date = DateUtil.isADateFormat(nf);
-                                if (date) {
-                                    sql.append(CONNECT_QUOTATION).append(getDate(value))
+                                if (DateUtil.isCellDateFormatted(cell)) {
+                                    sql.append(CONNECT_QUOTATION).append(getDate(cell.getDateCellValue()))
                                             .append(CONNECT_QUOTATION).append(CONNECT_COMMA);
                                 } else {
-
+                                    HSSFDataFormatter dataFormatter = new HSSFDataFormatter();
+                                    String value = dataFormatter.formatCellValue(cell);
                                     sql.append(CONNECT_QUOTATION).append(value)
                                             .append(CONNECT_QUOTATION).append(CONNECT_COMMA);
                                 }
@@ -110,22 +112,28 @@ public class PoiUtil {
             }
             bufferedWriter.flush();
         } catch (Exception e) {
-            log.error("catch error,", e);
+            log.error("generate sql catch error", e);
+            return null;
         } finally {
             try {
                 bufferedWriter.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("ioException",e);
             }
         }
         return destFile;
     }
 
-
+    /**
+     * 获取表的头数据
+     * @param excelFile 源文件
+     * @param headIndex 表头行数
+     * @return
+     */
     public static List<String> listTableHead(File excelFile, Integer headIndex) {
         List<String> result = Lists.newArrayList();
         Sheet sheet = getSheet(excelFile);
-        Row row = sheet.getRow(headIndex);
+        Row row = sheet.getRow(headIndex-1);
         short firstCellNum = row.getFirstCellNum();
         short lastCellNum = row.getLastCellNum();
         for (short i = firstCellNum; i <= lastCellNum; i++) {
@@ -137,6 +145,7 @@ public class PoiUtil {
         }
         return result;
     }
+
 
     private static Sheet getSheet(File excelFile) {
         InputStream inputStream = null;
@@ -164,32 +173,8 @@ public class PoiUtil {
 
     }
 
-    private static String getDate(String sourceValue) {
-        // 7/27/19 15:45
-        try {
-            //todo 转换时间还有问题 会改变月份
-            Date parse = new SimpleDateFormat("MM/DD/yy HH:mm").parse(sourceValue);
-            return new SimpleDateFormat("yyyy-MM-DD HH:mm:ss").format(parse);
-        } catch (ParseException e) {
-            log.error("change date format error,", e);
-            return NULL;
-        }
-    }
-
-    public static void main(String[] args) {
-        File file = new File("D:/dept.xlsx");
-        ParseExcelDTO parseExcelDTO = new ParseExcelDTO();
-        parseExcelDTO.setUrl("jdbc:mysql://106.15.188.249:3306/test");
-        parseExcelDTO.setUserName("root");
-        parseExcelDTO.setPassword("f088df87e10c40fe804c54e88d54b8e4");
-        parseExcelDTO.setTableName("dept");
-        List<String> columnList = JdbcUtil.getColumnList(parseExcelDTO);
-//        getSqlFile(file, columnList, 2, "test", "dept", "D:");
-
-        List<String> list = listTableHead(file, 0);
-        System.out.println(list);
-
-
+    private static String getDate(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
     }
 
 }
