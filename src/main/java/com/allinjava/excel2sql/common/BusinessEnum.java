@@ -11,7 +11,7 @@ public enum  BusinessEnum {
     FILE_NOT_NULL(405,"上传文件不能为空"),
     FILE_UPLOAD_ERROR(406,"上传文件出错"),
     FILE_FORMAT_ERROR(407,"文件格式不对，不是excel文件"),
-    DATABASE_INFO_ERROR(408,"数据库信息错误,未得到列字段"),
+    DATABASE_INFO_ERROR(408,"数据库信息错误,得不到表的列字段"),
     SQL_ERROR(407,"生成sql文件失败"),
     ;
 

@@ -24,7 +24,7 @@
                         <div style="margin-top:10px " class="layui-form-item">
                             <label class="layui-form-label">数据库主机地址</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="host" value="127.0.0.1" required  lay-verify="required"    placeholder="例如,127.0.0.1" autocomplete="off" class="layui-input">
+                                <input type="text" name="host"  required  lay-verify="required"    placeholder="请输入主机地址" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -60,12 +60,11 @@
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">是否按表头解析</label>
-                            <div class="layui-input-inline">
-                                <input type="radio" name="hasTableHead" value="0" title="否" checked>
+                            <div class="layui-input-block">
+                                <input type="radio" name="hasTableHead" value="0" title="否">
                                 <input type="radio" name="hasTableHead" value="1" title="是">
                             </div>
                         </div>
-
                         <div class="layui-form-item">
                             <label class="layui-form-label">表头所在行</label>
                             <div class="layui-input-inline">
