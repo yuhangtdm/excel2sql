@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
+/**
+ * 统一异常处理器
+ * 用于执行controller层抛出的异常
+ */
 @ControllerAdvice
 @Slf4j
 public class PlatExceptionHandler  {
